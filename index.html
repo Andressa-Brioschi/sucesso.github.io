@@ -1,11 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>TESTE</h1>
+
+    <h1><!DOCTYPE html>
+        <html lang="pt-BR">
+        <head>
+          <meta charset="UTF-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+          <title>Loja Autorizada</title>
+        </head>
+        <body>
+          <h1 id="status">Processando autorização da loja...</h1>
+        
+          <script>
+            // Função para extrair parâmetros da URL
+            function getQueryParams() {
+              const params = new URLSearchParams(window.location.search);
+              return {
+                code: params.get("code"),
+                shop_id: params.get("shop_id"),
+                nome_fantasia: params.get("loja") // passamos nome da loja como 'state'
+              };
+            }
+        
+            async function enviarParaServidor() {
+              const { code, shop_id, nome_fantasia } = getQueryParams();
+        
+              if (!code || !shop_id || !nome_fantasia) {
+                document.getElementById("status").innerText = "Parâmetros ausentes na URL.";
+                return;
+              }
+        
+              try {
+                // Substitua abaixo pelo seu endereço ngrok atual
+                const endpointFlask = "https://SEU_ID_NGROK.ngrok.io/retorno_autorizacao";
+        
+                const response = await fetch(endpointFlask, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify({ code, shop_id, nome_fantasia })
+                });
+        
+                if (response.ok) {
+                  document.getElementById("status").innerText = "Loja autorizada com sucesso!";
+                } else {
+                  const text = await response.text();
+                  document.getElementById("status").innerText = "Erro ao salvar no servidor: " + text;
+                }
+              } catch (error) {
+                document.getElementById("status").innerText = "Erro na requisição: " + error;
+              }
+            }
+        
+            enviarParaServidor();
+          </script>
+        </body>
+        </html>
+        </h1>
 </body>
 </html>
