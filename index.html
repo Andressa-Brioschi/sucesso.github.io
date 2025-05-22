@@ -24,18 +24,6 @@
     async function enviarParaServidor() {
       const { code, shop_id, nome_fantasia, cliente_url } = getQueryParams();
 
-      // Exibe os dados extraídos da URL na tela
-      document.getElementById("debug").innerText =
-        `Parâmetros extraídos da URL:\n` +
-        `code: ${code}\n` +
-        `shop_id: ${shop_id}\n` +
-        `nome_fantasia: ${nome_fantasia}\n` +
-        `cliente_url: ${cliente_url}`;
-
-      // Se algum dado estiver faltando, avisa na tela e para
-      if (!code || !shop_id || !nome_fantasia || !cliente_url) {
-        document.getElementById("status").innerText = "Parâmetros ausentes na URL.";
-        return;
       }
 
       try {
