@@ -7,10 +7,8 @@
 </head>
 <body>
   <h1 id="status">Processando autorização da loja...</h1>
-  <pre id="debug" style="background: #f5f5f5; padding: 1rem; border: 1px solid #ccc;"></pre>
 
   <script>
-    // Função para extrair parâmetros da URL
     function getQueryParams() {
       const params = new URLSearchParams(window.location.search);
       return {
@@ -24,17 +22,15 @@
     async function enviarParaServidor() {
       const { code, shop_id, nome_fantasia, cliente_url } = getQueryParams();
 
+      if (!code || !shop_id || !nome_fantasia || !cliente_url) {
+        document.getElementById("status").innerText = "Parâmetros ausentes na URL.";
+        return;
       }
 
       try {
         const endpointFlask = "https://8f81-191-8-225-144.ngrok-free.app/retorno_autorizacao";
 
         const payload = { code, shop_id, nome_fantasia, cliente_url };
-
-        // Mostra os dados que estão sendo enviados ao servidor
-        document.getElementById("debug").innerText +=
-          `\n\nJSON enviado ao servidor:\n` +
-          JSON.stringify(payload, null, 2);
 
         const response = await fetch(endpointFlask, {
           method: "POST",
